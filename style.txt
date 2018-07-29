@@ -1,0 +1,8 @@
+ 
+Local variables: example_local_variable
+Parameter variables: example_parameter_variable
+Subroutines: example_subroutine
+Modules: example_module_m
+
+Types: example_type_t
+Type subroutines: example_type_example_subroutine
