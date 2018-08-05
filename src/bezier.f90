@@ -23,11 +23,8 @@ module bezier_m
 
     end type bezier_interf_t
 
-
-
     ! Bezier representation of structured mesh's block
     type, private :: bezier_block_t
-
         real*8, dimension(:, :), allocatable :: xyz_bernstein
         real*8, dimension(:), allocatable :: x_cp, y_cp, z_cp
 
@@ -35,12 +32,10 @@ module bezier_m
         real*8, dimension(:), allocatable :: u_cp, v_cp
         real*8, dimension(:, :), allocatable :: u_table, v_table
         real*8, dimension(:), allocatable :: u_totals, v_totals
-
     end type bezier_block_t
 
     ! Bezier representation of structured mesh
     type, public :: bezier_grid_t
-
         type(grid_t), pointer :: grid
 
         integer :: u_order, v_order
@@ -51,11 +46,10 @@ module bezier_m
         type(bezier_interf_t), dimension(:, :), allocatable :: u_interfs, v_interfs
 
     contains
-        procedure, public :: init => bezier_grid_int
+        procedure, public :: init => bezier_grid_init
         procedure, public :: destroy => bezier_grid_destroy
         procedure, public :: generate_new_grid => bezier_grid_generate_new_grid
         procedure, public :: set_xyz_cp_wrapper => bezier_grid_set_xyz_cp_wrapper
-
     end type bezier_grid_t
 
 
@@ -64,14 +58,13 @@ contains
     !******************************************************************
     !***** Initialize Bezier Grid Type
     !******************************************************************
-    subroutine bezier_grid_int(self, grid, u_order, v_order, num_rows_table, num_cols_table)
+    subroutine bezier_grid_init(self, grid, u_order, v_order, num_rows_table, num_cols_table)
         class(bezier_grid_t), intent(inout) :: self
         type(grid_t), target, intent(in) :: grid
         integer, intent(in) :: u_order, v_order, num_rows_table, num_cols_table
     
         real*8, dimension(:), allocatable :: u_temp, v_temp, x_temp, y_temp, z_temp
         integer :: i, j, k, l, ip
-
 
         call self%destroy()
 
@@ -92,7 +85,6 @@ contains
         allocate(self%v_interfs(self%grid%num_rows, self%grid%num_cols-1))
         ! Interfaces running in u direction
         allocate(self%u_interfs(self%grid%num_rows-1, self%grid%num_cols))    
-        
         
         ! Initialize each Bezier block u interface representation
         do i = 1, self%grid%num_rows-1
@@ -131,7 +123,7 @@ contains
     
             end do
         end do
-        
+
         ! Initialize each Bezier block v interface representation
         do i = 1, self%grid%num_rows
             do j = 1, self%grid%num_cols-1
@@ -144,7 +136,6 @@ contains
                 allocate(x_temp(self%grid%blocks(i,j)%num_rows))
                 allocate(y_temp(self%grid%blocks(i,j)%num_rows))
                 allocate(z_temp(self%grid%blocks(i,j)%num_rows))
-                
                 
                 l = self%grid%blocks(i,j)%num_cols
                 do k = 1, self%grid%blocks(i,j)%num_rows
@@ -169,8 +160,7 @@ contains
     
             end do
         end do
-        
-        
+ 
         ! Fix adjacent control point curves
         do i = 1, self%grid%num_rows
             do j = 1, self%grid%num_cols-1
@@ -178,12 +168,10 @@ contains
                     self%v_interfs(i,j)%x_cp(self%num_v_cp) = self%v_interfs(i+1,j)%x_cp(1)
                     self%v_interfs(i,j)%y_cp(self%num_v_cp) = self%v_interfs(i+1,j)%y_cp(1)
                     self%v_interfs(i,j)%z_cp(self%num_v_cp) = self%v_interfs(i+1,j)%z_cp(1)
-                    
                 end if
-                
             end do
         end do
-        
+ 
         ! Fix intersecting control points matrices, snap u's to v's
         do i = 1, self%grid%num_rows-1
             do j = 1, self%grid%num_cols
@@ -202,25 +190,7 @@ contains
                 
             end do
         end do
-        
-        
-        open(2, file="output/x_cp.dat")
-        open(3, file="output/y_cp.dat")
-        open(4, file="output/z_cp.dat")
-        i = 1
-        j = 1
-        do l = 1, self%num_u_cp
-            write (2, '(f15.8)', advance='no') self%u_interfs(i,j)%x_cp(l)
-            write (3, '(f15.8)', advance='no') self%u_interfs(i,j)%y_cp(l)
-            write (4, '(f15.8)', advance='no') self%u_interfs(i,j)%z_cp(l)
-        end do
-        
-        close(2)
-        close(3)
-        close(4)
-        
-        
-        
+       
         ! Initialize each Bezier block representation
         do i = 1, self%grid%num_rows
             do j = 1, self%grid%num_cols
@@ -259,7 +229,7 @@ contains
         end do
         
                 
-    end subroutine bezier_grid_int
+    end subroutine bezier_grid_init
     
         
     !******************************************************************

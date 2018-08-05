@@ -23,7 +23,6 @@ xs = [np.loadtxt(A) for A in tokenizer('output/x_cp.dat')]
 ys = [np.loadtxt(A) for A in tokenizer('output/y_cp.dat')]
 zs = [np.loadtxt(A) for A in tokenizer('output/z_cp.dat')]
 for i in range(len(xs)):
-       # ax.plot_wireframe(xs[i], ys[i], zs[i], rstride=1, cstride=1, color='g')
 	ax.scatter(xs[i], ys[i], zs[i], color='g')
 
 
@@ -38,8 +37,7 @@ xs = [np.loadtxt(A) for A in tokenizer('output/x_out.dat')]
 ys = [np.loadtxt(A) for A in tokenizer('output/y_out.dat')]
 zs = [np.loadtxt(A) for A in tokenizer('output/z_out.dat')]
 for i in range(len(xs)):
-	ax.plot_wireframe(xs[i], ys[i], zs[i], rstride=1, cstride=1, color='b')
-	#ax.scatter(xs[i], ys[i], zs[i], color='b')
+    ax.plot_wireframe(xs[i], ys[i], zs[i], rstride=1, cstride=1, color='b')
 
 ax.set_xlabel('x (u, v)')
 ax.set_ylabel('y (u, v)')

@@ -29,12 +29,12 @@ program torus
 
     ! Read coarse mesh from plot3d file
     call plot3d_in%read_xyz()
-    ! Write coase mesh to numpy file -- used for easy plotting with matplotlib
+    ! Write coarse mesh to numpy file -- used for easy plotting with matplotlib
     call numpy_in%write_xyz(grid_in)
     ! Parameterize coarse mesh by arc length
     call param_grid(grid_in)
     ! Initialize bezier class with uv orders 5x5 and arc length table dimensions 50x50
-    call bezier%init(grid_in, 2, 2, 50, 50)
+    call bezier%init(grid_in, 5, 5, 50, 50)
   
     ! Create a generating computational-space distribution
     call param_uniform(num_rows_new, num_cols_new, u_new, v_new)
@@ -46,7 +46,6 @@ program torus
     ! Write fine mesh's control points to numpy file -- used for easy plotting with matplotlib
     call numpy_cp%write_cp(bezier)
     
-    
     call plot3d_in%destroy()
     call numpy_in%destroy()
     call numpy_out%destroy()
@@ -54,8 +53,5 @@ program torus
     call grid_in%destroy()
     call grid_out%destroy()
     
-    
-
-
 end program torus
 

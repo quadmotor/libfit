@@ -51,7 +51,6 @@ contains
         integer :: i, j
         
         if (allocated(self%blocks)) then
-            
             do i = 1, self%num_rows
                 do j = 1, self%num_cols
                     call self%blocks(i,j)%destroy()
@@ -62,7 +61,5 @@ contains
         if (allocated(self%blocks)) deallocate(self%blocks)
     
     end subroutine grid_destroy
-
-
 
 end module grid_m

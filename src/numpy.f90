@@ -43,7 +43,6 @@ contains
         self%file_name_x = file_name_x
         self%file_name_y = file_name_y
         self%file_name_z = file_name_z
-    
     end subroutine numpy_init
     
     !******************************************************************
@@ -55,12 +54,7 @@ contains
         if (allocated(self%file_name_x)) deallocate(self%file_name_x)
         if (allocated(self%file_name_y)) deallocate(self%file_name_y)
         if (allocated(self%file_name_z)) deallocate(self%file_name_z)
-        
-
-    
     end subroutine numpy_destroy
-    
-
     
     !******************************************************************
     !***** Write Grid
@@ -75,17 +69,16 @@ contains
         open(3, file=self%file_name_y)
         open(4, file=self%file_name_z)
 
-
         do i = 1, grid%num_rows
             do j = 1, grid%num_cols
-                ! write block delimiter
+                ! Write block delimiter
                 write (2, '(A)') "HEAD"
                 write (3, '(A)') "HEAD"
                 write (4, '(A)') "HEAD"
                 do k = 1, grid%blocks(i,j)%num_rows
                     do l = 1, grid%blocks(i,j)%num_cols
                         ip = (k-1)*grid%blocks(i,j)%num_cols+l
-                        ! write block's real-space coordinates
+                        ! Write block's real-space coordinates
                         write (2, '(f15.8)', advance='no') grid%blocks(i,j)%x(ip)
                         write (3, '(f15.8)', advance='no') grid%blocks(i,j)%y(ip)
                         write (4, '(f15.8)', advance='no') grid%blocks(i,j)%z(ip)
